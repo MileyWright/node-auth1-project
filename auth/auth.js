@@ -23,7 +23,19 @@ router.post('/register', (req, res) => {
 
 // // POST /api/login
 router.post('/login', (req, res) => {
-
+    let {name, password} = req.body;
+    db.findBy({name})
+    .first()
+    .then(user => {
+        if(user && bcrypt.compareSync(password, user.password)) {
+            res.status(200).json({message: 'Logged In'})
+        } else {
+            res.status(404).json({message: 'You shall not pass!'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: 'Could not login in user'})
+    })
 })
 
 // //GET /api/users
