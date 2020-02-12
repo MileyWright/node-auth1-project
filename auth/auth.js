@@ -22,9 +22,9 @@ router.post('/register', (req, res) => {
 })
 
 // // POST /api/login
-// router.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
 
-// })
+})
 
 // //GET /api/users
 // router.get('/users', (req, res) => {
