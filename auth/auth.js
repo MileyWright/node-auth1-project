@@ -45,6 +45,24 @@ router.post('/login', (req, res) => {
 
 
 //middleware to verify credentials using bcrypt
-
+function restricted(req, res, next) {
+    const {name, password} = req.headers;
+    if(name && password) {
+        db.findBy({name})
+        .first()
+        .then( user => {
+            if(user && bcrypt.compareSync(password, user.password)) {
+                next();
+            } else {
+                res.status(401).json({message: 'Invalid'})
+            }
+        })
+        .catch (err => {
+            console.log(err)
+            res.status(500).json({error: 'unexpected'})
+            res.status(400).json({error: 'no credientials provided' })
+        })
+    }
+}
 
 module.exports = router;
