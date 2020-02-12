@@ -39,9 +39,18 @@ router.post('/login', (req, res) => {
 })
 
 // //GET /api/users
-// router.get('/users', (req, res) => {
+router.get('/users', (req, res, next) => {
+    db.getUsers()
+    .then(user => {
+        res.status(200).json({user})
+    })
+   .catch(err => {
+       console.log(err)
+    res.status(500).json({error: 'Error'})
 
-// })
+   })
+})
+ 
 
 
 //middleware to verify credentials using bcrypt
@@ -54,14 +63,15 @@ function restricted(req, res, next) {
             if(user && bcrypt.compareSync(password, user.password)) {
                 next();
             } else {
-                res.status(401).json({message: 'Invalid'})
+                res.status(401).json({message: 'You Shall Not Pass!'})
             }
         })
         .catch (err => {
             console.log(err)
-            res.status(500).json({error: 'unexpected'})
-            res.status(400).json({error: 'no credientials provided' })
+            res.status(500).json({error: 'Error'})
         })
+    } else {
+        res.status(400).json({error: 'no credientials provided' })
     }
 }
 
