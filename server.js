@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const session = require('express-session');
+const knexSession = require('connect-session-knex')(session);
 const Auth = require('./Auth/auth');
 
 const server = express();
@@ -21,6 +22,8 @@ server.use(
         }
     })
 )
+
+
 
 
 server.use('/api', Auth);
