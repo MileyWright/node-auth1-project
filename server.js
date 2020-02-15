@@ -15,7 +15,7 @@ server.use(
         secret: 'shh..this is a secret',
         httpOnly: true,
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60,  // = 1 hours
             secure: false

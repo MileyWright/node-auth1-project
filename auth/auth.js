@@ -40,7 +40,7 @@ router.post('/login', restricted, (req, res) => {
 })
 
 // //GET /api/users
-router.get('/users', (req, res, next) => {
+router.get('/users', restricted, (req, res, next) => {
     db.getUsers()
     .then(user => {
         res.status(200).json({user})
@@ -52,11 +52,24 @@ router.get('/users', (req, res, next) => {
    })
 })
  
+router.delete('/logout', (req,res) => {
+    if(req.session) {
+        req.session.destroy((err) => {
+            if(err) {
+                res.status(400).send('Still logged in')
+            } else {
+                res.send('Logged out!')
+            }
+        });
+    } else {
+        res.end();
+    }
+})
 
 
 //middleware to verify credentials using bcrypt
 function restricted(req, res, next) {
-   if(req.session && req.session.user == true) {
+   if(req.session && (req.session.user == true)) {
         next();
     } else {
         res.status(401).json({message: 'No Credentials Provided!'})
