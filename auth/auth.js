@@ -22,12 +22,13 @@ router.post('/register', (req, res) => {
 })
 
 // // POST /api/login
-router.post('/login', (req, res) => {
+router.post('/login', restricted, (req, res) => {
     let {name, password} = req.body;
     db.findBy({name})
     .first()
     .then(user => {
         if(user && bcrypt.compareSync(password, user.password)) {
+            req.session.user = user;
             res.status(200).json({message: 'Logged In'})
         } else {
             res.status(404).json({message: 'You shall not pass!'})
@@ -55,24 +56,12 @@ router.get('/users', (req, res, next) => {
 
 //middleware to verify credentials using bcrypt
 function restricted(req, res, next) {
-    const {name, password} = req.headers;
-    if(name && password) {
-        db.findBy({name})
-        .first()
-        .then( user => {
-            if(user && bcrypt.compareSync(password, user.password)) {
-                next();
-            } else {
-                res.status(401).json({message: 'You Shall Not Pass!'})
-            }
-        })
-        .catch (err => {
-            console.log(err)
-            res.status(500).json({error: 'Error'})
-        })
+   if(req.session && req.session.user) {
+        next();
     } else {
-        res.status(400).json({error: 'no credientials provided' })
+        res.status(401).json({message: 'No Credentials Provided!'})
     }
+   
 }
 
 module.exports = router;
