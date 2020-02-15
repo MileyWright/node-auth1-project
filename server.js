@@ -19,13 +19,20 @@ server.use(
         cookie: {
             maxAge: 1000 * 60,  // = 1 hours
             secure: false
-        }
-    })
+        },
+        store: new knexSession({
+            knex: require('./data/dbConfig'),
+            tablename: 'sessions',
+            sidfieldname: 'sid',
+            createtable: true,
+            clearInterval: 1000 * 60 * 60
+        })
+    })   
 )
 
-
-
-
+server.use('/', (req, res) => {
+    res.send(`<h1>Up and Running</h1>`)
+})
 server.use('/api', Auth);
 
 module.exports = server;
