@@ -30,9 +30,9 @@ server.use(
     })   
 )
 
-server.use('/', (req, res) => {
-    res.send(`<h1>Up and Running</h1>`)
-})
+// server.use('/', (req, res) => {
+//     res.send(`<h1>Up and Running</h1>`)
+// })
 server.use('/api', Auth);
 
 module.exports = server;

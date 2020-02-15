@@ -28,7 +28,7 @@ router.post('/login', restricted, (req, res) => {
     .first()
     .then(user => {
         if(user && bcrypt.compareSync(password, user.password)) {
-            req.session.user = user;
+            req.session.user = true;
             res.status(200).json({message: 'Logged In'})
         } else {
             res.status(404).json({message: 'You shall not pass!'})
@@ -56,7 +56,7 @@ router.get('/users', (req, res, next) => {
 
 //middleware to verify credentials using bcrypt
 function restricted(req, res, next) {
-   if(req.session && req.session.user) {
+   if(req.session && req.session.user == true) {
         next();
     } else {
         res.status(401).json({message: 'No Credentials Provided!'})

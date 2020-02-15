@@ -18,5 +18,5 @@ function findBy(filter) {
 }
 
 function getUsers() {
-    return db('users')
+    return db('users').select('id', 'name');
 }
