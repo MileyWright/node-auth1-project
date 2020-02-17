@@ -51,7 +51,8 @@ router.get('/users', restricted, (req, res, next) => {
 
    })
 })
- 
+
+//DELETE /api/logout 
 router.delete('/logout', (req,res) => {
     if(req.session) {
         req.session.destroy((err) => {
