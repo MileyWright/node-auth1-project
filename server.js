@@ -13,11 +13,11 @@ server.use(
     session({
         name: 'node-auth-project',
         secret: 'shh..this is a secret',
-        httpOnly: true,
         resave: false,
         saveUninitialized: false,
         cookie: {
             maxAge: 1000 * 60,  // = 1 hours
+            httpOnly: true,
             secure: false
         },
         store: new knexSession({
